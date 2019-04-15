@@ -1,6 +1,6 @@
 <h3>Rate my cakes</h3>
 <p>Submit a cake to be rated</p>
-<form #cakeForm="ngForm" (ngSubmit)="!isEdit ? addCake(cakeForm) : updateCake(cakeForm)">
+<form #cakeForm="ngForm" (ngSubmit)="!isEdit ? onNewCake(cakeForm) : onUpdatedCake(cakeForm)">
   <input name="_id" type="hidden" [(ngModel)]="currentCake._id" #cakeId="ngModel"
          *ngIf="isEdit"/>
   <div class="form-group">
@@ -46,27 +46,9 @@
 <!--  <button [disabled]="!cakeForm.form.valid" class="btn btn-block mb-3" [innerText]="!isEdit ? 'Add New Cake' : 'Update Cake'"></button>-->
 </form>
 
-<!--<ul class="list-unstyled" *ngIf="cakes?.length > 0">-->
-<!--  <li class="card card-body mb-2" *ngFor="let cake of cakes" >-->
-<!--    <img src="https://www.cookculture.com/wp-content/uploads/2018/04/blackberry-blur-cake-1070850.jpg" width="100px" height="100px" >-->
-<!--      <small>-->
-<!--        <button (click)="cake.hide = !cake.hide" class="btn btn-dark btn-sm">-->
-<!--          <i [ngClass]="cake.hide ? 'fa fa-plus' : 'fa fa-minus'"></i>-->
-<!--        </button>-->
-<!--      </small>-->
-<!--      <small>-->
-<!--        <button (click)="removeCake(cake._id)" class="btn btn-dark btn-sm ml-3">-->
-<!--          <i class="far fa-trash-alt"></i>-->
-<!--        </button>-->
-<!--      </small>-->
-<!--      <small>-->
-<!--        <button (click)="editCake(cake._id)" class="btn btn-dark btn-sm ml-3">-->
-<!--          <i class="far fa-edit"></i>-->
-<!--        </button>-->
-<!--      </small>-->
-<!--    <ul class="list-group" *ngIf="!cake.hide">-->
-<!--      <li class="list-group-item">Baker: {{ cake.baker }}</li>-->
-<!--    </ul>-->
-<!--  </li>-->
-<!--</ul>-->
+<ul class="list-unstyled" *ngIf="cakes?.length > 0">
+  <li class="card card-body mb-2" *ngFor="let cake of cakes" >
+    <img [src]="cake.url" width="100px" height="100px" [alt]="cake.baker">
+  </li>
+</ul>
 
