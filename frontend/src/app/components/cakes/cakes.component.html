@@ -1,0 +1,72 @@
+<h3>Rate my cakes</h3>
+<p>Submit a cake to be rated</p>
+<form #cakeForm="ngForm" (ngSubmit)="!isEdit ? addCake(cakeForm) : updateCake(cakeForm)">
+  <input name="_id" type="hidden" [(ngModel)]="currentCake._id" #cakeId="ngModel"
+         *ngIf="isEdit"/>
+  <div class="form-group">
+    <label>Baker Name:</label>
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="currentCake.baker"
+      [ngClass]="{'is-invalid':cakeBaker.errors && cakeBaker.touched}"
+      name="baker"
+      #cakeBaker="ngModel"
+      required
+      minlength="2"
+    >
+    <div [hidden]="!cakeBaker.errors?.required" class="invalid-feedback">
+      Last name required
+    </div>
+    <div [hidden]="!cakeBaker.errors?.minlength" class="invalid-feedback">
+      Must be at least 2 characters
+    </div>
+  </div>
+  <div class="form-group">
+    <label>Image Url:</label>
+    <input
+      type="text"
+      class="form-control"
+      name="url"
+      [(ngModel)]="currentCake.url"
+      [ngClass]="{'is-invalid':cakeUrl.errors && cakeUrl.touched}"
+      #cakeUrl="ngModel"
+      required
+      minlength="2"
+    >
+    <div [hidden]="!cakeUrl.errors?.required" class="invalid-feedback">
+      First name required
+    </div>
+    <div [hidden]="!cakeUrl.errors?.minlength" class="invalid-feedback">
+      Must be at least 2 characters
+    </div>
+  </div>
+
+  <button [disabled]="!cakeForm.form.valid" class="btn btn-block mb-3 btn-primary col-sm-2">SUBMIT</button>
+<!--  <button [disabled]="!cakeForm.form.valid" class="btn btn-block mb-3" [innerText]="!isEdit ? 'Add New Cake' : 'Update Cake'"></button>-->
+</form>
+
+<!--<ul class="list-unstyled" *ngIf="cakes?.length > 0">-->
+<!--  <li class="card card-body mb-2" *ngFor="let cake of cakes" >-->
+<!--    <img src="https://www.cookculture.com/wp-content/uploads/2018/04/blackberry-blur-cake-1070850.jpg" width="100px" height="100px" >-->
+<!--      <small>-->
+<!--        <button (click)="cake.hide = !cake.hide" class="btn btn-dark btn-sm">-->
+<!--          <i [ngClass]="cake.hide ? 'fa fa-plus' : 'fa fa-minus'"></i>-->
+<!--        </button>-->
+<!--      </small>-->
+<!--      <small>-->
+<!--        <button (click)="removeCake(cake._id)" class="btn btn-dark btn-sm ml-3">-->
+<!--          <i class="far fa-trash-alt"></i>-->
+<!--        </button>-->
+<!--      </small>-->
+<!--      <small>-->
+<!--        <button (click)="editCake(cake._id)" class="btn btn-dark btn-sm ml-3">-->
+<!--          <i class="far fa-edit"></i>-->
+<!--        </button>-->
+<!--      </small>-->
+<!--    <ul class="list-group" *ngIf="!cake.hide">-->
+<!--      <li class="list-group-item">Baker: {{ cake.baker }}</li>-->
+<!--    </ul>-->
+<!--  </li>-->
+<!--</ul>-->
+
