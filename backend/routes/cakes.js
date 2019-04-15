@@ -63,24 +63,22 @@ router.delete(`/:id`,  async (req, res) => {
 
 
 // UPDATE
-router.patch('/:id',  async (req, res) => {
-  const id = req.params.id
-  // const body = _.pick(req.body, ['text', 'completed'])
+router.patch('/:id', async (req, res) => {
+  const id = req.params.id;
 
   try {
     const cake = await Cake.findOneAndUpdate({
       _id: id,
-      _creator: req.user._id
-    }, {$set: req.params.body}, {new: true})
+    }, {$set: req.body}, {new: true});
 
     if(!cake) {
-      return res.status(404).send()
+      return res.status(404).send();
     }
-    res.send(cake)
+    // res.send(cake);
+    res.json(cake);
   } catch(e) {
-    res.status(400).send(e)
+    res.status(400).send(e);
   }
 })
-
 
 module.exports = router;
