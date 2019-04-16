@@ -53,12 +53,12 @@
   <!--  Rate a cake and Display cakes-->
   <!--  Creat new rate: Method1: (submit) event on the form  Method2: (click) event on submit button-->
   <!--  <div class="col-sm-8 overflow-auto" style="height: 40em" (submit)="onNewRate(cake._id, stars, comment)" >-->
-  <div class="col-sm-6 overflow-auto offset-1" style="height: 16em">
+  <div class="col-sm-6 overflow-auto offset-1" style="height: 24em">
     <ul class="list-unstyled" *ngIf="cakes?.length > 0">
       <li class="card card-body mb-2" *ngFor="let cake of cakes">
         <div class="row">
           <div class="col-sm-4">
-            <img [src]="cake.url" [alt]="cake.baker" class="img-fluid" (click)="showOne(cake)">
+            <img [src]="cake.url" [alt]="cake.baker" class="img-fluid" (click)="showOne(cake._id)">
           </div>
 
           <form #ratingForm="ngForm" class="col-sm-8">
@@ -82,8 +82,14 @@
                 minlength="2"
               >
             </div>
-            <button class="btn btn-block mb-3 btn-primary col-sm-8 col-md-4 col-lg-3"
+            <button class="d-inline-block mb-3 btn btn-primary col-sm-8 col-md-4 col-lg-3"
                     (click)="onNewRate(cake._id, stars, comment)">Rate!
+            </button>
+            <button class="d-inline-block mb-3 btn btn-primary col-sm-8 col-md-4 col-lg-3 ml-3"
+            (click)="onDeleteCake(cake._id)">Delete
+            </button>
+            <button class="d-inline-block mb-3 btn btn-primary col-sm-8 col-md-4 col-lg-3 ml-3"
+                    (click)="onEditCake(cake._id)">Edit
             </button>
           </form>
         </div>
@@ -91,7 +97,8 @@
     </ul>
   </div>
 </div>
-<div class="row mt-5 overflow-auto" *ngIf="currentCake" style="height: 16em">
+<!-- CurrentCake Details -->
+<div class="row mt-5 overflow-auto" *ngIf="currentCake" style="height: 24em">
   <div class="col-sm-4 align-top">
     <h3 class="mb-3">Baked by {{currentCake.baker}}</h3>
     <img [src]="currentCake.url" [alt]="currentCake.baker" class="img-fluid">

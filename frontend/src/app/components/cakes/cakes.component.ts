@@ -86,8 +86,7 @@ export class CakesComponent implements OnInit {
 
     this.cakeService.addRatingToCake(cakeId, rating).subscribe(cake => {
       if (this.currentCake && this.currentCake._id === cakeId) {
-        this.currentCake.ratings.unshift(rating);
-        this.currentCake.avgRating = cake.avgRating;
+        this.showOne(cakeId);
       }
     });
 
@@ -98,16 +97,13 @@ export class CakesComponent implements OnInit {
   onDeleteRate(cakeId, ratingId) {
     this.cakeService.removeRatingFromCake(cakeId, ratingId).subscribe(cake => {
       if (this.currentCake && this.currentCake._id === cakeId) {
-        // this.currentCake.ratings = this.currentCake.ratings.filter(rating => rating._id !== ratingId);
-        this.currentCake.ratings = cake.ratings;
-        this.currentCake.avgRating = cake.avgRating;
+        this.showOne(cakeId);
       }
     })
   }
 
-  showOne(cake: Cake) {
-    this.currentCake = cake;
-    console.log(cake);
+  showOne(cakeId) {
+    this.cakeService.getCake(cakeId).subscribe(cake => this.currentCake = cake)
   }
 }
 
