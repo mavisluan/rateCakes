@@ -50,9 +50,10 @@ export class CakesComponent implements OnInit {
         this.cakes.splice(index, 1);
         this.cakes.unshift(value);
       }
-    })
+    });
+
     this.cakeService.updateCake(value as Cake).subscribe( cake => {
-      console.log(cake);
+      this.refreshCurrentCake(cake);
     });
     // reset the form
     this.form.reset();
@@ -64,11 +65,10 @@ export class CakesComponent implements OnInit {
       this.cakes = cakes.map(cake => {
         return cake;
       });
-      console.log('getAllCakes', cakes);
     })
   }
 
-  removeCake(id: string) {
+  onDeleteCake(id: string) {
     if (confirm('Are You Sure?')) {
       this.cakeService.removeCake(id).subscribe(() => {
         this.cakes = this.cakes.filter(cake => cake._id != id);
@@ -76,7 +76,7 @@ export class CakesComponent implements OnInit {
     }
   }
 
-  editCake(id: string) {
+  onEditCake(id: string) {
     this.cakeService.getCake(id).subscribe(cake => { this.newCake = cake });
     this.isEdit = true;
   }
@@ -85,9 +85,7 @@ export class CakesComponent implements OnInit {
     var rating = {stars: stars.value, comment: comment.value};
 
     this.cakeService.addRatingToCake(cakeId, rating).subscribe(cake => {
-      if (this.currentCake && this.currentCake._id === cakeId) {
-        this.showOne(cakeId);
-      }
+      this.refreshCurrentCake(cake);
     });
 
     stars.value = 5;
@@ -96,14 +94,18 @@ export class CakesComponent implements OnInit {
 
   onDeleteRate(cakeId, ratingId) {
     this.cakeService.removeRatingFromCake(cakeId, ratingId).subscribe(cake => {
-      if (this.currentCake && this.currentCake._id === cakeId) {
-        this.showOne(cakeId);
-      }
+      this.refreshCurrentCake(cake)
     })
   }
 
   showOne(cakeId) {
     this.cakeService.getCake(cakeId).subscribe(cake => this.currentCake = cake)
+  }
+
+  refreshCurrentCake(cake) {
+    if (this.currentCake && this.currentCake._id === cake._id) {
+      this.showOne(cake._id);
+    }
   }
 }
 

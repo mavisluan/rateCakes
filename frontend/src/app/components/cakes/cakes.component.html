@@ -45,7 +45,7 @@
         </div>
       </div>
 
-      <button [disabled]="!cakeForm.form.valid" class="btn btn-block mb-3 btn-primary col-sm-8">SUBMIT</button>
+      <button [disabled]="!cakeForm.form.valid" class="btn btn-block mb-3 btn-primary col-sm-8" [innerText]="!isEdit ? 'SUBMIT' : 'UPDATE'"></button>
       <!--  <button [disabled]="!cakeForm.form.valid" class="btn btn-block mb-3" [innerText]="!isEdit ? 'Add New Cake' : 'Update Cake'"></button>-->
     </form>
   </div>
