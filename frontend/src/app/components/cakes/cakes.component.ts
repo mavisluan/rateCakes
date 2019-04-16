@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Cake} from "../../models/Cake";
 import {CakeService} from "../../services/cake.service";
+import {Rating} from "../../models/Rating";
 
 @Component({
   selector: 'app-cakes',
@@ -12,6 +13,7 @@ export class CakesComponent implements OnInit {
     _id: '',
     url: '',
     baker:'',
+    ratings:[]
   };
 
   isEdit: boolean = false;
@@ -19,7 +21,7 @@ export class CakesComponent implements OnInit {
   @ViewChild('cakeForm') form: any;
 
   cakes: Cake[];
-  // inject CakeService as dependency
+  /* inject CakeService as dependency*/
   constructor(private cakeService: CakeService) { }
 
   ngOnInit() {
@@ -31,9 +33,6 @@ export class CakesComponent implements OnInit {
     if (!valid) {
       console.log('Form is not valid');
     } else {
-      // if the form input is valid (firstName, lastName, email)
-      // console.log('value', value);
-      // add value/ cakeForm object into db
       this.cakeService.addCake(value as Cake).subscribe( cake => {
         console.log('cake',cake);
         this.cakes.unshift(cake);
@@ -78,5 +77,14 @@ export class CakesComponent implements OnInit {
   editCake(id: string) {
     this.cakeService.getCake(id).subscribe(cake => { this.currentCake = cake });
     this.isEdit = true;
+  }
+
+  onNewRate(cakeId, stars, comment) {
+    this.cakeService.getCake(cakeId).subscribe(cake => {
+      const newRating = { stars: stars.value, comments: comment.value};
+      console.log('before', cake);
+      cake.ratings.push(newRating);
+      console.log('after', cake);
+    })
   }
 }

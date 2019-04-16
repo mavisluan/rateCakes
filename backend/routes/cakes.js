@@ -1,4 +1,5 @@
 var express = require('express');
+const {Rating} = require("../models/cake");
 const {Cake} = require("../models/cake");
 var router = express.Router();
 
@@ -65,7 +66,6 @@ router.delete(`/:id`,  async (req, res) => {
 // UPDATE
 router.patch('/:id', async (req, res) => {
   const id = req.params.id;
-
   try {
     const cake = await Cake.findOneAndUpdate({
       _id: id,
@@ -74,11 +74,53 @@ router.patch('/:id', async (req, res) => {
     if(!cake) {
       return res.status(404).send();
     }
-    // res.send(cake);
-    res.json(cake);
+    res.send(cake);
   } catch(e) {
     res.status(400).send(e);
   }
 })
+
+// UPDATE cake rating
+// Add rating object into cake.ratings array
+router.patch('/:cakeId/ratings', async (req, res) => {
+  var rating = new Rating({
+    stars: req.body.stars,
+    comment: req.body.comment,
+  });
+
+  try {
+    const cake = await Cake.findOneAndUpdate({
+      _id: req.params.cakeId,
+    }, {$push: {ratings: rating }}, {new: true});
+
+    if(!cake) {
+      return res.status(404).send();
+    }
+    res.send(cake);
+  } catch(e) {
+    res.status(400).send(e);
+  }
+});
+
+
+// DELETE cake rating
+// Remove a rating by Id from cake.ratings
+router.patch(`/:cakeId/ratings/:ratingId/delete`,  async (req, res) => {
+  const {cakeId, ratingId} = req.params;
+
+  try {
+    const cake = await Cake.findOneAndUpdate({
+      _id: cakeId,
+    }, {$pull: {ratings: {_id: ratingId}}});
+
+    if (!cake) {
+      return res.status(404).send();
+    }
+
+    res.status(200).send(cake.ratings)
+  } catch(e) {
+    res.status(400).send();
+  }
+});
 
 module.exports = router;
