@@ -46,6 +46,7 @@ export class CakeService {
 
   addRatingToCake(cakeId, rating: Rating): Observable<Cake> {
     const url = `${this.apiUrl}/${cakeId}/ratings`;
+    console.log(`url: ${url}`)
     return this.http.patch<Cake>(url, rating, httpOptions);
   }
 }
