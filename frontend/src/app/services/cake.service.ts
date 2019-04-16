@@ -3,6 +3,7 @@ import {Cake} from "../models/Cake";
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Observable} from "rxjs";
+import {Rating} from "../models/Rating";
 
 // set header for post request
 const httpOptions = {
@@ -41,5 +42,11 @@ export class CakeService {
   getCake(id: string): Observable<Cake> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get<Cake>(url);
+  }
+
+  addRatingToCake(cakeId, rating: Rating): Observable<Cake> {
+    // console.log('addrating', rating);
+    const url = `${this.apiUrl}/${cakeId}/ratings`;
+    return this.http.patch<Cake>(url, rating, httpOptions);
   }
 }

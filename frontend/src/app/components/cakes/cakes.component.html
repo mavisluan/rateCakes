@@ -56,8 +56,6 @@
           <img [src]="cake.url" [alt]="cake.baker" class="img-fluid">
         </div>
         <form #ratingForm="ngForm" (ngSubmit)="onNewRate(cake._id, stars, comment)" class="col-sm-8">
-          <!--      <input name="_id" type="hidden" [(ngModel)]="currentCake._id" #rateId="ngModel"-->
-          <!--             *ngIf="isEdit"/>-->
           <div class="form-group">
             <select #stars class="form-control">
               <option value="1">1 star</option>

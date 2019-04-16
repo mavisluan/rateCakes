@@ -80,11 +80,13 @@ export class CakesComponent implements OnInit {
   }
 
   onNewRate(cakeId, stars, comment) {
-    this.cakeService.getCake(cakeId).subscribe(cake => {
-      const newRating = { stars: stars.value, comments: comment.value};
-      console.log('before', cake);
-      cake.ratings.push(newRating);
-      console.log('after', cake);
+    const rating = {stars: stars.value, comment: comment.value};
+    console.log(rating);
+    this.cakeService.addRatingToCake(cakeId, rating).subscribe(cake => {
+      console.log(cake);
     })
+    //
+    // stars = 0;
+    // comment = '';
   }
 }
