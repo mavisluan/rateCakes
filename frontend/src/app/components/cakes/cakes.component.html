@@ -97,11 +97,12 @@
     <img [src]="currentCake.url" [alt]="currentCake.baker" class="img-fluid">
   </div>
   <div class="col-sm-6 h5 offset-1 align-top">
-    <p *ngIf="!currentCake.avgRating" class="text-danger">Not rated yet. Be the first rater!</p>
+    <p *ngIf="!currentCake.avgRating || currentCake.ratings.length === 0" class="text-danger">Not rated yet. Be the first rater!</p>
     <p *ngIf="currentCake.avgRating" class="text-primary">Average Rating: {{currentCake.avgRating}} </p>
-    <div *ngFor="let rating of currentCake.ratings">
+    <div class='card card-body'*ngFor="let rating of currentCake.ratings">
       <p>{{rating.comment}}</p>
       <p>{{rating.stars}} stars</p>
+      <button class="btn btn-warning col-sm-3" (click)="onDeleteRate(currentCake._id, rating._id)">Delete</button>
     </div>
   </div>
 </div>

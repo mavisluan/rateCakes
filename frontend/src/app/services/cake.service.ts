@@ -49,4 +49,10 @@ export class CakeService {
     console.log(`url: ${url}`)
     return this.http.patch<Cake>(url, rating, httpOptions);
   }
+
+  removeRatingFromCake(cakeId, ratingId): Observable<Cake> {
+    const url = `${this.apiUrl}/${cakeId}/ratings/${ratingId}/delete`;
+    console.log(`url: ${url}`)
+    return this.http.delete<Cake>(url, httpOptions);
+  }
 }

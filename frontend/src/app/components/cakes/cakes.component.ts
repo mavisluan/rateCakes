@@ -95,14 +95,19 @@ export class CakesComponent implements OnInit {
     comment.value = '';
   }
 
+  onDeleteRate(cakeId, ratingId) {
+    this.cakeService.removeRatingFromCake(cakeId, ratingId).subscribe(cake => {
+      if (this.currentCake && this.currentCake._id === cakeId) {
+        // this.currentCake.ratings = this.currentCake.ratings.filter(rating => rating._id !== ratingId);
+        this.currentCake.ratings = cake.ratings;
+        this.currentCake.avgRating = cake.avgRating;
+      }
+    })
+  }
+
   showOne(cake: Cake) {
     this.currentCake = cake;
     console.log(cake);
   }
 }
 
-
-// TODO:
-//  1. clean up getAvgRating and onNewRate(repetition)
-//  2. Calculate avgRating and update recent rate on the page
-//  3. Delete comment or stars of specific rating on a cake
