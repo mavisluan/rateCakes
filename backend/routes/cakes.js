@@ -24,7 +24,7 @@ router.post('/',  async (req, res) => {
 // GET ALL
 router.get('/',  async (req, res) => {
   try {
-    const cakes = await Cake.find({});
+    const cakes = await Cake.find({}).sort({createdAt: -1});
     res.send(cakes)
   } catch(e) {
     res.status(400).send(e)

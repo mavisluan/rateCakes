@@ -1,16 +1,17 @@
 <h3>Rate my cakes</h3>
 <div class="row">
+  <!--  Create Cake Form-->
   <div class="col-sm-4">
     <p>Submit a cake to be rated</p>
     <form #cakeForm="ngForm" (ngSubmit)="!isEdit ? onNewCake(cakeForm) : onUpdatedCake(cakeForm)">
-      <input name="_id" type="hidden" [(ngModel)]="currentCake._id" #cakeId="ngModel"
+      <input name="_id" type="hidden" [(ngModel)]="newCake._id" #cakeId="ngModel"
              *ngIf="isEdit"/>
       <div class="form-group">
         <label>Baker Name:</label>
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="currentCake.baker"
+          [(ngModel)]="newCake.baker"
           [ngClass]="{'is-invalid':cakeBaker.errors && cakeBaker.touched}"
           name="baker"
           #cakeBaker="ngModel"
@@ -30,7 +31,7 @@
           type="text"
           class="form-control"
           name="url"
-          [(ngModel)]="currentCake.url"
+          [(ngModel)]="newCake.url"
           [ngClass]="{'is-invalid':cakeUrl.errors && cakeUrl.touched}"
           #cakeUrl="ngModel"
           required
@@ -48,40 +49,58 @@
       <!--  <button [disabled]="!cakeForm.form.valid" class="btn btn-block mb-3" [innerText]="!isEdit ? 'Add New Cake' : 'Update Cake'"></button>-->
     </form>
   </div>
-  <div class="col-sm-8">
-  <ul class="list-unstyled" *ngIf="cakes?.length > 0">
-    <li class="card card-body mb-2" *ngFor="let cake of cakes">
-      <div class="row">
-        <div class="col-sm-4">
-          <img [src]="cake.url" [alt]="cake.baker" class="img-fluid">
+
+  <!--  Rate a cake and Display cakes-->
+  <!--  Creat new rate: Method1: (submit) event on the form  Method2: (click) event on submit button-->
+  <!--  <div class="col-sm-8 overflow-auto" style="height: 40em" (submit)="onNewRate(cake._id, stars, comment)" >-->
+  <div class="col-sm-6 overflow-auto offset-1" style="height: 16em">
+    <ul class="list-unstyled" *ngIf="cakes?.length > 0">
+      <li class="card card-body mb-2" *ngFor="let cake of cakes">
+        <div class="row">
+          <div class="col-sm-4">
+            <img [src]="cake.url" [alt]="cake.baker" class="img-fluid" (click)="showOne(cake)">
+          </div>
+
+          <form #ratingForm="ngForm" class="col-sm-8">
+            <div class="form-group">
+              <select #stars class="form-control">
+                <option value="5">5 stars</option>
+                <option value="4">4 stars</option>
+                <option value="3">3 stars</option>
+                <option value="2">2 stars</option>
+                <option value="1">1 star</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <input
+                #comment
+                placeholder="Type your comment here"
+                type="text"
+                class="form-control"
+                required
+                minlength="2"
+              >
+            </div>
+            <button class="btn btn-block mb-3 btn-primary col-sm-8 col-md-4 col-lg-3"
+                    (click)="onNewRate(cake._id, stars, comment)">Rate!
+            </button>
+          </form>
         </div>
-        <form #ratingForm="ngForm" (ngSubmit)="onNewRate(cake._id, stars, comment)" class="col-sm-8">
-          <div class="form-group">
-            <select #stars class="form-control">
-              <option value="1">1 star</option>
-              <option value="2">2 stars</option>
-              <option value="3">3 stars</option>
-              <option value="4">4 stars</option>
-              <option value="5">5 stars</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <input
-              #comment
-              type="text"
-              class="form-control"
-              name="baker"
-              required
-              minlength="2"
-            >
-          </div>
-
-          <button [disabled]="!ratingForm.form.valid" class="btn btn-block mb-3 btn-primary col-sm-8 col-md-4 col-lg-3">Rate!</button>
-          <!--  <button [disabled]="!rateForm.form.valid" class="btn btn-block mb-3" [innerText]="!isEdit ? 'Add New Cake' : 'Update Cake'"></button>-->
-        </form>
-      </div>
-    </li>
-  </ul>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="row mt-5 overflow-auto" *ngIf="currentCake" style="height: 16em">
+  <div class="col-sm-4 align-top">
+    <h3 class="mb-3">Baked by {{currentCake.baker}}</h3>
+    <img [src]="currentCake.url" [alt]="currentCake.baker" class="img-fluid">
+  </div>
+  <div class="col-sm-6 h5 offset-1 align-top">
+    <p>Average Rating: </p>
+    <div *ngFor="let rating of currentCake.ratings">
+      <p>{{rating.comment}}</p>
+      <p>{{rating.stars}} stars</p>
+    </div>
   </div>
 </div>

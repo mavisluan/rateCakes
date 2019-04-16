@@ -9,12 +9,14 @@ import {Rating} from "../../models/Rating";
   styleUrls: ['./cakes.component.css']
 })
 export class CakesComponent implements OnInit {
-  currentCake: Cake = {
+  newCake: Cake = {
     _id: '',
     url: '',
     baker:'',
     ratings:[]
   };
+
+  currentCake: Cake;
 
   isEdit: boolean = false;
 
@@ -75,18 +77,22 @@ export class CakesComponent implements OnInit {
   }
 
   editCake(id: string) {
-    this.cakeService.getCake(id).subscribe(cake => { this.currentCake = cake });
+    this.cakeService.getCake(id).subscribe(cake => { this.newCake = cake });
     this.isEdit = true;
   }
 
   onNewRate(cakeId, stars, comment) {
     const rating = {stars: stars.value, comment: comment.value};
-    console.log(rating);
     this.cakeService.addRatingToCake(cakeId, rating).subscribe(cake => {
       console.log(cake);
-    })
-    //
-    // stars = 0;
-    // comment = '';
+    });
+
+    stars.value = 5;
+    comment.value = '';
+  }
+
+  showOne(cake: Cake) {
+    this.currentCake = cake;
+    console.log(cake);
   }
 }
