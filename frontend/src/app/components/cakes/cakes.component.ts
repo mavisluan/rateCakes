@@ -83,7 +83,7 @@ export class CakesComponent implements OnInit {
 
   onNewRate(cakeId, stars, comment) {
     const rating = {stars: stars.value, comment: comment.value};
-    this.getAvgRating(cakeId, rating.stars);
+
     this.cakeService.addRatingToCake(cakeId, rating).subscribe(cake => {
       console.log('add new rating', cake);
     });
@@ -96,25 +96,10 @@ export class CakesComponent implements OnInit {
     this.currentCake = cake;
     console.log(cake);
   }
-
-  getAvgRating(cakeId, stars) {
-    this.cakeService.getCake(cakeId).subscribe(cake => {
-      console.log('stars', stars)
-      var sum = 0;
-      var avgRating = 0;
-      cake.ratings.map(rating => {
-        sum += parseInt(rating.stars);
-        return sum;
-      });
-      sum += parseInt(stars);
-
-      avgRating = sum/(cake.ratings.length + 1);
-      this.currentCake.avgRating = avgRating;
-
-      cake.avgRating = avgRating;
-      this.cakeService.updateCake(cake as Cake).subscribe( cake => {
-        console.log('update avgRating', cake);
-      });
-    })
-  }
 }
+
+
+// TODO:
+//  1. clean up getAvgRating and onNewRate(repetition)
+//  2. Calculate avgRating and update recent rate on the page
+//  3. Delete comment or stars of specific rating on a cake

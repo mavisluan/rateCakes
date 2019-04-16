@@ -8,7 +8,7 @@ const RatingSchema = new mongoose.Schema({
         comment: {
             type: String,
             required: [true, "Comment is required."],
-            minlength: [3, "Comment must be more than 3 characters"]
+            minlength: [2, "Comment must be more than 2 characters"]
         },
     },
     {timestamps: true}

@@ -83,19 +83,18 @@ router.patch('/:id', async (req, res) => {
 // UPDATE cake rating
 // Add rating object into cake.ratings array
 router.patch('/:cakeId/ratings', async (req, res) => {
-  var rating = new Rating({
-    stars: req.body.stars,
-    comment: req.body.comment,
-  });
+  const {cakeId} = req.params;
 
   try {
-    const cake = await Cake.findOneAndUpdate({
-      _id: req.params.cakeId,
-    }, {$push: {ratings: rating }}, {new: true});
+    const cake = await Cake.findById(cakeId);
 
     if(!cake) {
       return res.status(404).send();
     }
+    cake.ratings.push(req.body);
+    const avgRating = getAvgRating(cake);
+    cake.avgRating = avgRating;
+    cake.save();
     res.send(cake);
   } catch(e) {
     res.status(400).send(e);
@@ -105,22 +104,30 @@ router.patch('/:cakeId/ratings', async (req, res) => {
 
 // DELETE cake rating
 // Remove a rating by Id from cake.ratings
-router.patch(`/:cakeId/ratings/:ratingId/delete`,  async (req, res) => {
+router.delete(`/:cakeId/ratings/:ratingId/delete`,  async (req, res) => {
   const {cakeId, ratingId} = req.params;
 
   try {
-    const cake = await Cake.findOneAndUpdate({
-      _id: cakeId,
-    }, {$pull: {ratings: {_id: ratingId}}});
-
-    if (!cake) {
-      return res.status(404).send();
-    }
-
-    res.status(200).send(cake.ratings)
+    const cake = await Cake.findById(cakeId);
+    cake.ratings.id(ratingId).remove();
+    const avgRating = getAvgRating(cake);
+    cake.avgRating = avgRating;
+    cake.save();
+    res.send(cake);
   } catch(e) {
-    res.status(400).send();
+    res.status(400).send(e);
   }
 });
+
+
+const getAvgRating = (cake) => {
+  let sum = 0;
+  cake.ratings.forEach(rating => {
+    sum += rating.stars;
+    return sum;
+  });
+
+  return (sum /cake.ratings.length).toFixed(2);
+};
 
 module.exports = router;
