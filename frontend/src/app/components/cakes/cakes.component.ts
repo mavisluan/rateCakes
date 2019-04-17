@@ -72,6 +72,9 @@ export class CakesComponent implements OnInit {
     if (confirm('Are You Sure?')) {
       this.cakeService.removeCake(id).subscribe(() => {
         this.cakes = this.cakes.filter(cake => cake._id != id);
+        if (this.currentCake._id === id) {
+          this.currentCake = null;
+        }
       });
     }
   }
@@ -92,11 +95,11 @@ export class CakesComponent implements OnInit {
     comment.value = '';
   }
 
-  onDeleteRate(cakeId, ratingId) {
-    this.cakeService.removeRatingFromCake(cakeId, ratingId).subscribe(cake => {
-      this.refreshCurrentCake(cake)
-    })
-  }
+  // onDeleteRate(cakeId, ratingId) {
+  //   this.cakeService.removeRatingFromCake(cakeId, ratingId).subscribe(cake => {
+  //     this.refreshCurrentCake(cake)
+  //   })
+  // }
 
   showOne(cakeId) {
     this.cakeService.getCake(cakeId).subscribe(cake => this.currentCake = cake)

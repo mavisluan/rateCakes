@@ -1,0 +1,15 @@
+<div class="row mt-5 overflow-auto" *ngIf="cake" style="height: 24em">
+  <div class="col-sm-4 align-top">
+    <h3 class="mb-3">Baked by {{cake.baker}}</h3>
+    <img [src]="cake.url" [alt]="cake.baker" class="img-fluid">
+  </div>
+  <div class="col-sm-6 h5 offset-1 align-top">
+    <p *ngIf="!cake.avgRating || cake.ratings.length === 0" class="text-danger">Not rated yet. Be the first rater!</p>
+    <p *ngIf="cake.avgRating" class="text-primary">Average Rating: {{cake.avgRating}} </p>
+    <div class='card card-body'*ngFor="let rating of cake.ratings">
+      <p>{{rating.comment}}</p>
+      <p>{{rating.stars}} stars</p>
+      <button class="btn btn-warning col-sm-3" (click)="onDeleteRate(cake._id, rating._id)">Delete</button>
+    </div>
+  </div>
+</div>

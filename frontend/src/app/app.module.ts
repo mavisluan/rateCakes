@@ -7,11 +7,13 @@ import { CakesComponent } from './components/cakes/cakes.component';
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {CakeService} from "./services/cake.service";
+import { CakeInfoComponent } from './components/cake-info/cake-info.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CakesComponent
+    CakesComponent,
+    CakeInfoComponent
   ],
   imports: [
     BrowserModule,
