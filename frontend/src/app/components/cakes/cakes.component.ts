@@ -32,6 +32,7 @@ export class CakesComponent implements OnInit {
 
   onNewCake({value, valid}: { value: Cake, valid: boolean }) {
     // if form input is not valid, console the error
+    console.log('value', value)
     if (!valid) {
       console.log('Form is not valid');
     } else {
@@ -72,7 +73,7 @@ export class CakesComponent implements OnInit {
     if (confirm('Are You Sure?')) {
       this.cakeService.removeCake(id).subscribe(() => {
         this.cakes = this.cakes.filter(cake => cake._id != id);
-        if (this.currentCake._id === id) {
+        if (this.currentCake && this.currentCake._id === id) {
           this.currentCake = null;
         }
       });
